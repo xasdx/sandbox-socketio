@@ -1,8 +1,20 @@
+<textarea id="messages"></textarea>
+<input id="msg"></input>
+<button onclick="sendMessage()">Send</button>
+<input id="user" placeholder="Username"></input>
+
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  let socket = io.connect("http://localhost:3210")
-  socket.on("test", (data) => {
-    console.log(data)
-    socket.emit("test-event", { message: `hello ${data.name}` })
+  let socket = io()
+  
+  function sendMessage() {
+    let userName = document.getElementById("user").value
+    let message = document.getElementById("msg").value
+    socket.emit("new_client_msg", { name: userName, message: message })
+  }
+
+  socket.on("new_msg", (msg) => {
+    let value = document.getElementById("messages").value
+    document.getElementById("messages").value = value + "\n" + `${msg.name}: ${msg.message}`
   })
 </script>
