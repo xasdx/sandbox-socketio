@@ -7,7 +7,15 @@
 <script>
   let messageHistory = []
   let socket = io()
+ 
+  Notification.requestPermission()
   
+  function notify(msg) {
+    let notification = new Notification(msg.name + " says:", {
+      body: msg.message
+    })
+  }
+
   function sendMessage() {
     let userName = document.getElementById("user").value
     let message = document.getElementById("msg").value
@@ -22,10 +30,12 @@
   socket.on("new_msg", msg => {
     messageHistory.push(msg)
     displayMessages()
+    notify(msg)
   })
 
   function displayMessages() {
     let history = messageHistory.slice(-30).map(msg => `${msg.name}: ${msg.message}`).join("\n")
     document.getElementById("messages").value = history
   }
+
 </script>
