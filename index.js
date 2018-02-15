@@ -6,8 +6,13 @@ server.listen(process.env.PORT)
 
 app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"))
 
+let messages = []
+
 io.on("connection", (socket) => {
   console.log("client connected")
+  
+  socket.emit("recent_messages", messages.slice(-10))
+  
   socket.on("new_client_msg", (msg) => {
     console.log(`${msg.name} commented ${msg.message}`)
     socket.broadcast.emit("new_msg", msg)

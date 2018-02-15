@@ -13,6 +13,13 @@
     socket.emit("new_client_msg", { name: userName, message: message })
   }
 
+  socket.on("recent_messages", (messages) => {
+    messages.forEach(m => {
+      let value = document.getElementById("messages").value
+      document.getElementById("messages").value = value + "\n" + `${msg.name}: ${msg.message}`
+    })
+  })
+
   socket.on("new_msg", (msg) => {
     let value = document.getElementById("messages").value
     document.getElementById("messages").value = value + "\n" + `${msg.name}: ${msg.message}`
