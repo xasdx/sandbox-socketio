@@ -2,7 +2,7 @@ let app = require("express")()
 let server = require("http").Server(app)
 let io = require("socket.io")(server)
 
-server.listen(process.env.WEB_APP_PORT)
+server.listen(process.env.PORT)
 
 app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"))
 
