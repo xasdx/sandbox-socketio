@@ -8,8 +8,8 @@ app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"))
 
 let messages = []
 
-io.on("connection", (socket) => {
-  console.log("client connected")
+io.on("connection", socket => {
+  console.log(`${socket.id} has connected`)
   
   socket.emit("recent_messages", messages.slice(-10))
   
@@ -19,4 +19,6 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("new_msg", msg)
     socket.emit("new_msg", msg)
   })
+  
+  socket.on("disconnect", () => console.log(`${socket.id} has disconnected`))
 })
